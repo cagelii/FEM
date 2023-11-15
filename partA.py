@@ -57,11 +57,11 @@ def eta(x,alpha,laplace):
         b = alpha*laplace[i]+rhs(x[i]) #integrand of x
         c = (a**2+b**2)*h/2 #trapezoidal
         res[i] = np.sqrt(c)*h #error indicator
-    return np.array(res)
+    return res
 
 def main():
     alpha = 0.01
-    n = 40
+    n = 12
     l = -1
     r = 1
     x = np.linspace(l,r,num=n)
@@ -86,16 +86,17 @@ def main():
     errori = eta(x,alpha,laplace)
     res = [rhs(r)+alpha*laplace[i] for i,r in enumerate(x)]
 
-    fig,(ax1,ax2,ax3,ax4) = plt.subplots(nrows=1,ncols=4,sharex=True)
-    ax1.plot(x,u_h,'o')
+    fig,(ax1,ax2,ax3,ax4) = plt.subplots(nrows=1,ncols=4)
+    fig.tight_layout()
+    ax1.plot(x,u_h)
     ax1.set_xlabel('x')
     ax1.set_title('Solution')
 
-    ax2.plot(x,res,'o')
+    ax2.plot(x,res)
     ax2.set_xlabel('x')
     ax2.set_title('Residuals')
 
-    ax3.plot(x,errori,'o')
+    ax3.plot(x,errori)
     ax3.set_xlabel('x')
     ax3.set_title('Error indicator')
 

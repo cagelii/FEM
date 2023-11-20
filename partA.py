@@ -68,7 +68,7 @@ def main():
     errori = np.ones(1)
     while x.size<1e4 and np.sum(np.square(errori))>1e-3:
         B = loadVectorAssembler(x,0,0)
-        M = massAssembler(x)
+        M = alpha*massAssembler(x)
         laplace = discreteLaplacian(M,B)
         errori = eta(x,alpha,laplace)
         l = 0.9
@@ -80,7 +80,7 @@ def main():
 
     A = alpha*stiffnessAssembler(x)
     B = loadVectorAssembler(x,0,0)
-    M = massAssembler(x)
+    M = alpha*massAssembler(x)
     u_h = np.linalg.solve(A,B)
     laplace = discreteLaplacian(M,B)
     errori = eta(x,alpha,laplace)

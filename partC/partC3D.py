@@ -82,4 +82,4 @@ for j in range(len(rho)):
 	ax.set_xlabel('Time (days)')
 
 ax.legend()
-plt.savefig("optimized.png")
+plt.savefig("massloss3d.png")

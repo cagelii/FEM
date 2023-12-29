@@ -76,7 +76,7 @@ def func(data):
 import scipy.optimize as optimize
 from scipy.optimize import minimize
 
-data = [32,0.45,0.13]
+data = [20,0.5,0.1]
 res = minimize(func, data, method = 'nelder-mead' , options = {'xtol':1e-3 , 'disp': True})
 print(res)
 

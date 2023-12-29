@@ -3,19 +3,18 @@ set_log_active(False)
 import numpy as np
 import matplotlib.pyplot as plt
 
-mesh=Mesh("3dmesh/sphere2.xml")
+mesh=Mesh("3dmesh/sphere1.xml")
 V = FunctionSpace(mesh,"CG",1)
 
 #Data
-T = 20
+T = 50
 h = mesh.hmin()
 dt = h
-dts = np.linspace(0,T,int(np.round(T/dt,0))+1)
+dts = np.linspace(0,T,int(np.round(T/dt,0))+2)
 alpha = 0.01
-R = 0.445
-r = 0.12677
+R = 0.5
+r = 0.2
 rho = [10, 20, 40]
-rho = 32.6
 
 # Mass loss figure
 fig, ax = plt.subplots(1,1)
@@ -29,10 +28,10 @@ class DirichletBoundary(SubDomain):
 g = Constant(0.0)
 bc = DirichletBC(V,g,DirichletBoundary())
 
-for j in range(1): #range(len(rho)):
+for j in range(len(rho)):
 
 	#Initial condition
-	indata = Expression("pow((R-sqrt(pow(x[0],2)+pow(x[1],2))),2)+pow(x[2],2) <= r ? rho :0", rho=rho, R=R, r=r, degree=3)
+	indata = Expression("pow((R-sqrt(pow(x[0],2)+pow(x[1],2))),2)+pow(x[2],2) <= r ? rho :0", rho=rho[j], R=R, r=r, degree=3)
 	u0 = Function(V)
 	u0 = interpolate(indata,V)
 
@@ -51,7 +50,7 @@ for j in range(1): #range(len(rho)):
 	u = Function(V)
 
 	# create file
-	#file = File("partC3D/solution.pvd")
+	file = File("partC3D/solution.pvd")
 
 	#Set initial condition
 	u.assign(u0)
@@ -78,7 +77,7 @@ for j in range(1): #range(len(rho)):
 		mass[i] = assemble(M)
 		t += dt
 
-	ax.plot(dts,mass) #label=labels[j])
+	ax.plot(dts,mass, label=labels[j])
 	ax.set_ylabel('Mass loss')
 	ax.set_xlabel('Time (days)')
 
